@@ -1,0 +1,64 @@
+.container{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 860px;
+    background-color: #1b6d85;
+}
+.header{
+    position: absolute;
+    width: 100%;
+    height: 860px;
+    background: url("../img/mainbuilding.jpg") no-repeat fixed center;
+    background-size: 100% auto;
+}
+.home{
+    margin-left: 80%;
+    margin-top: 75px;
+    font-size: 30px;
+    font-family: "Slim-Joe";
+
+}
+.home a{
+    color: white;
+}
+.home a:hover{
+    color: #8c8c8c;
+    text-decoration: none;
+}
+.home:hover + .form{
+    z-index: 100;
+}
+.welcome{
+    position: relative;
+    margin-top: 400px;
+    margin-left: 15%;
+    letter-spacing: 0.1em;
+    font-weight: 100;
+    font-size: 6em;
+    font-family: "Slim-Joe";
+    text-transform: uppercase;
+    /*font-size: 80px;*/
+}
+.welcome-word{
+    margin-left: 60%;
+    letter-spacing: 0.1em;
+    font-size: 30px;
+    font-family: "Slim-Joe";
+
+}
+.form{
+    position: absolute;
+    margin-left: 80%;
+    width: 170px;
+    height: 220px;
+    /*background-color: white;*/
+    z-index: -19;
+}
+.form:hover{
+    z-index: 100;
+}
+.btn-default{
+    margin-top: 10px;
+    margin-left: 25%;
+}
