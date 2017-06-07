@@ -31,10 +31,13 @@ if(isset($_SESSION['level'])) {
                     }
                     $stmt = $conn->prepare("SELECT id, stdname, chinese,math,english FROM score");
                     $stmt->execute();
+                    //数据预处理，防止未知异常数据注入数据库
                     $table = "";
                     $res = $stmt->fetchAll();
                     foreach ($res as $x => $key) {
-                        $table = $table . "<tr><th class='row'>{$key['id']}</th class='row'><th>{$key['stdname']}</th><th class='row'>{$key['chinese']}</th><th class='row'>{$key['math']}</th><th class='row'>{$key['english']}</th></tr>";
+                        $average = "{$key['chinese']} + {$key['math']} +{$key['english']} ";
+                        $table = $table . "<tr><th class='row'>{$key['id']}</th class='row'><th>{$key['stdname']}</th><th class='row'>{$key['chinese']}</th><th class='row'>{$key['math']}</th><th class='row'>{$key['english']}</th>
+                        <th class='row'>{$all}</th><th class='row'>{$average}</th></tr>";
                     }
                     echo $table;
                     exit();
@@ -44,14 +47,27 @@ if(isset($_SESSION['level'])) {
         }
         try {
             echo "<table style='border: solid 1px black;'>";
-            echo "<tr><th>Id</th><th>姓名</th><th>语文</th><th>数学</th><th>英语</th></tr>";
+            echo "<tr><th>Id</th><th>姓名</th><th>语文</th><th>数学</th><th>英语</th><th>总分</th><th>平均分</th><th>评价</th></tr>";
             //数据预处理，防止未知异常数据注入数据库
             $stmt = $conn->prepare("SELECT id, stdname, chinese,math,english FROM score");
             $stmt->execute();
             $table = "";
             $res = $stmt->fetchAll();
             foreach ($res as $x => $key) {
-                $table = $table . "<tr><th class='row'>{$key['id']}</th class='row'><th>{$key['stdname']}</th><th class='row'>{$key['chinese']}</th><th class='row'>{$key['math']}</th><th class='row'>{$key['english']}</th></tr>";
+                $all = $key['chinese'] + $key['math'] +$key['english'];
+                $average = $all/3;
+
+                if($average>= "85"){
+                    $mark = "A";
+                }elseif ($average>= "70"){
+                    $mark = "B";
+                }elseif ($average>= "60"){
+                    $mark = "C";
+                }else{
+                    $mark = "D";
+                }
+                $table = $table . "<tr><th class='row'>{$key['id']}</th class='row'><th>{$key['stdname']}</th><th class='row'>{$key['chinese']}</th><th class='row'>{$key['math']}</th><th class='row'>{$key['english']}</th>
+                <th class='row'>{$all}</th><th class='row'>{$average}</th><th class='row'>{$mark}</th></tr>";
             }
             echo $table;
             
@@ -64,7 +80,7 @@ if(isset($_SESSION['level'])) {
         echo "<a href='login.php?act=logout'>注销</a>";
     }else{
         echo "<table style='border: solid 1px black;'>";
-        echo "<tr><th>Id</th><th>姓名</th><th>语文</th><th>数学</th><th>英语</th></tr>";
+        echo "<tr><th>Id</th><th>姓名</th><th>语文</th><th>数学</th><th>英语</th><th>总分</th><th>平均分</th><th>评价</th></tr>";
         $stmt = $conn->prepare("SELECT id FROM usersmassage WHERE id={$_SESSION['uid']}");
         $stmt->execute();
 
@@ -76,7 +92,20 @@ if(isset($_SESSION['level'])) {
         $res = $stmt->fetchAll();
         $table = "";
         foreach ($res as $x => $key) {
-            $table = $table . "<tr><th class='row'>{$key['id']}</th><th class='row'>{$key['stdname']}</th><th class='row'>{$key['chinese']}</th><th class='row'>{$key['math']}</th><th class='row'>{$key['english']}</th></tr   >";
+            $all = $key['chinese'] + $key['math'] +$key['english'];
+            $average = $all/3;
+
+            if($average>= "85"){
+                $mark = "A";
+            }elseif ($average>= "70"){
+                $mark = "B";
+            }elseif ($average>= "60"){
+                $mark = "C";
+            }else{
+                $mark = "D";
+            }
+            $table = $table . "<tr><th class='row'>{$key['id']}</th class='row'><th>{$key['stdname']}</th><th class='row'>{$key['chinese']}</th><th class='row'>{$key['math']}</th><th class='row'>{$key['english']}</th>
+                <th class='row'>{$all}</th><th class='row'>{$average}</th><th class='row'>{$mark}</th></tr>";
         }
         echo $table;
         echo "</table>";
